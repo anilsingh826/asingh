@@ -2,23 +2,26 @@ var path = require('path');
   express = require('express'),
   fs = require('fs'),
   app = express(),
-  //pg = require('pg')
-  http = require('http');
-  
-//~ var connection = mysql.createConnection({
+  pg = require('pg'),
+  http = require('http'),
+  conString = "postgres://postgres:postgres@localhost/demo_node";
+
+var connection = new pg.Client(conString);
+
+//~ var connection = pg.createConnection({
   //~ //host: 'localhost',
   //~ user: 'root',
   //~ database: 'demo_node',
 //~ });  
 
-//~ var connect = connection.connect(function(err){
-  //~ if(!err){
-        //~ console.log("You are connected to the database.");
-  //~ }
-  //~ else{
-        //~ throw err;
-  //~ }
-//~ });
+var connect = connection.connect(function(err){
+  if(!err){
+        console.log("You are connected to the database.");
+  }
+  else{
+        throw err;
+  }
+});
 
 //console.log(express.static(path.join(__dirname, "Kirsty Williams - Digitised Lipstick_files")))
 app.configure(function () {
@@ -33,7 +36,7 @@ app.get('/', function(req, res){
   if (req.session.user) {
       res.send("Welcome " + req.session.user.username + "<br>" + "<a href='/logout'>logout</a>");
   } else {
-    fs.readFile(__dirname + '/index.html', function (err, data) {
+    fs.readFile(__dirname + '/views/index.html', function (err, data) {
       if (err) throw err;
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.write(data, 'utf8');
@@ -46,7 +49,7 @@ app.get('/login', function(req, res){
   if (req.session.user) {
         res.redirect("/");
     } else {
-        fs.readFile(__dirname + '/login.html', function (err, data) {
+        fs.readFile(__dirname + '/views/login.html', function (err, data) {
           if (err) throw err;
           res.writeHead(200, {'Content-Type': 'text/html'});
           res.write(data, 'utf8');
@@ -60,7 +63,7 @@ app.get('/signup', function(req, res){
    if (req.session.user) {
       res.redirect("/");
   } else {
-      fs.readFile(__dirname + '/signup.html', function (err, data) {
+      fs.readFile(__dirname + '/views/signup.html', function (err, data) {
         if (err) throw err;
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.write(data, 'utf8');
