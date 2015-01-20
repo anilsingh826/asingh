@@ -2,7 +2,7 @@ var path = require('path');
   express = require('express'),
   fs = require('fs'),
   app = express(),
-  //~ mysql = require('mysql');
+  //pg = require('pg')
   http = require('http');
   
 //~ var connection = mysql.createConnection({
