@@ -4,7 +4,7 @@ var path = require('path');
   app = express(),
   pg = require('pg'),
   http = require('http'),
-  conString = "postgres://postgres:postgres@localhost/demo_node";
+  conString = process.env.DATABASE_URL || "postgres://postgres:postgres@localhost/demo_node";
 
 var connection = new pg.Client(conString);
 
